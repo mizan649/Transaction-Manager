@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Transaction Manager</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #73cf7f, #8b8d4a);
+    color: white;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    padding: 20px;
+}
+
+.clock {
+    font-size: 40px;
+    margin-top: 5px;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+/* BUTTON */
+button {
+    background: #00c9a7;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00a88a;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: rgba(255,255,255,0.2);
+}
+
+tr:nth-child(even) {
+    background: rgba(255,255,255,0.05);
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background: white;
+    color: black;
+    padding: 20px;
+    margin: 10% auto;
+    width: 300px;
+    border-radius: 10px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+}
+
+.balance {
+    font-size: 20px;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Transaction Manager</h1>
+    <div class="clock" id="clock"></div>
+</div>
+
+<div class="container">
+
+<div class="card">
+    <button onclick="openModal()">➕ Add Transaction</button>
+
+    <select id="filter" onchange="render()">
+        <option value="">All Staff</option>
+        <option>Jonayed</option>
+        <option>Anas</option>
+        <option>Hridoy</option>
+        <option>Arman</option>
+        <option>Arif</option>
+        <option>Saiful</option>
+        <option>Sujon Sir</option>
+    </select>
+
+    <div class="balance" id="balance"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Staff</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Reason</th>
+                <th>Date & Time</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-content">
+    <h3>Add Transaction</h3>
+
+    <select id="staff">
+        <option>Staff 1</option>
+        <option>Staff 2</option>
+        <option>Staff 3</option>
+        <option>Staff 4</option>
+        <option>Staff 5</option>
+        <option>Staff 6</option>
+        <option>Staff 7</option>
+    </select>
+
+    <select id="type">
+        <option value="give">Given</option>
+        <option value="take">Taken</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Amount">
+    <input type="text" id="note" placeholder="Reason">
+
+    <button onclick="save()">Save</button>
+    <button onclick="closeModal()">Close</button>
+</div>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("data")) || [];
+
+/* CLOCK */
+function updateClock() {
+    let now = new Date();
+    document.getElementById("clock").innerText = now.toLocaleString();
+}
+setInterval(updateClock, 1000);
+
+/* MODAL */
+function openModal() {
+    document.getElementById("modal").style.display = "block";
+}
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+/* SAVE */
+function save() {
+    let staff = document.getElementById("staff").value;
+    let type = document.getElementById("type").value;
+    let amount = document.getElementById("amount").value;
+    let note = document.getElementById("note").value;
+
+    if (!amount) return alert("Enter amount");
+
+    let time = new Date().toLocaleString();
+
+    data.push({staff, type, amount, note, time});
+    localStorage.setItem("data", JSON.stringify(data));
+
+    closeModal();
+    render();
+}
+
+/* RENDER */
+function render() {
+    let tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    let filter = document.getElementById("filter").value;
+
+    let total = 0;
+
+    data.forEach(t => {
+
+        if (filter && t.staff !== filter) return;
+
+        if (t.type === "take") total += Number(t.amount);
+        else total -= Number(t.amount);
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${t.staff}</td>
+            <td>${t.type}</td>
+            <td>${t.amount}</td>
+            <td>${t.note}</td>
+            <td>${t.time}</td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("balance").innerText = "Total Balance: " + total + " TK";
+}
+
+render();
+</script>
+
+</body>
+</html>
