@@ -6,242 +6,267 @@
 
 <style>
 body {
-    margin: 0;
+    margin:0;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #73cf7f, #8b8d4a);
+    background: linear-gradient(135deg, #141e30, #243b55);
     color: white;
 }
-
-/* HEADER */
 .header {
-    text-align: center;
-    padding: 20px;
+    text-align:center;
+    padding:20px;
 }
-
 .clock {
-    font-size: 40px;
-    margin-top: 5px;
+    font-size:20px;
 }
-
-/* CONTAINER */
 .container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
 }
-
-/* CARD */
 .card {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.08);
+    padding:20px;
+    border-radius:15px;
     backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 20px;
 }
-
-/* BUTTON */
 button {
-    background: #00c9a7;
-    border: none;
-    padding: 10px 15px;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
+    background:#00c9a7;
+    border:none;
+    padding:10px;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
 }
-
 button:hover {
-    background: #00a88a;
+    background:#00a88a;
 }
-
-/* TABLE */
+input, select {
+    padding:8px;
+    margin:5px;
+}
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
 }
-
 th, td {
-    padding: 10px;
-    text-align: center;
+    padding:10px;
+    text-align:center;
 }
-
 th {
     background: rgba(255,255,255,0.2);
 }
-
 tr:nth-child(even) {
     background: rgba(255,255,255,0.05);
 }
-
-/* MODAL */
 .modal {
-    display: none;
-    position: fixed;
-    top:0;
-    left:0;
+    display:none;
+    position:fixed;
     width:100%;
     height:100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.7);
 }
-
 .modal-content {
-    background: white;
-    color: black;
-    padding: 20px;
-    margin: 10% auto;
-    width: 300px;
-    border-radius: 10px;
-}
-
-input, select {
-    width: 100%;
-    padding: 8px;
-    margin: 8px 0;
-}
-
-.balance {
-    font-size: 20px;
-    margin-top: 10px;
+    background:white;
+    color:black;
+    padding:20px;
+    width:300px;
+    margin:10% auto;
+    border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
+<div id="auth" class="header">
+    <h2>🔐 Login</h2>
+    <input id="email" placeholder="Email"><br>
+    <input id="password" type="password" placeholder="Password"><br>
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
 <div class="header">
-    <h1>Transaction Manager</h1>
-    <div class="clock" id="clock"></div>
+    <h1>💼 Transaction Manager</h1>
+    <div id="clock" class="clock"></div>
+    <p id="userEmail"></p>
+    <button onclick="logout()">Logout</button>
 </div>
 
 <div class="container">
-
 <div class="card">
-    <button onclick="openModal()">➕ Add Transaction</button>
 
-    <select id="filter" onchange="render()">
-        <option value="">All Staff</option>
-        <option>Jonayed</option>
-        <option>Anas</option>
-        <option>Hridoy</option>
-        <option>Arman</option>
-        <option>Arif</option>
-        <option>Saiful</option>
-        <option>Sujon Sir</option>
-    </select>
+<button onclick="openModal()">➕ Add Transaction</button>
 
-    <div class="balance" id="balance"></div>
+<select id="filter" onchange="render()">
+<option value="">All Staff</option>
+<option>Staff 1</option>
+<option>Staff 2</option>
+<option>Staff 3</option>
+<option>Staff 4</option>
+<option>Staff 5</option>
+<option>Staff 6</option>
+<option>Staff 7</option>
+</select>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Staff</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Reason</th>
-                <th>Date & Time</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+<h3 id="balance"></h3>
+
+<table>
+<thead>
+<tr>
+<th>Staff</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Reason</th>
+<th>Date & Time</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
 </div>
-
+</div>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
 <div class="modal-content">
-    <h3>Add Transaction</h3>
+<h3>Add Transaction</h3>
 
-    <select id="staff">
-        <option>Jonayed</option>
-        <option>Anas</option>
-        <option>Hridoy</option>
-        <option>Arman</option>
-        <option>Arif</option>
-        <option>Saiful</option>
-        <option>Sujon Sir</option>
-    </select>
+<select id="staff">
+<option>Staff 1</option>
+<option>Staff 2</option>
+<option>Staff 3</option>
+<option>Staff 4</option>
+<option>Staff 5</option>
+<option>Staff 6</option>
+<option>Staff 7</option>
+</select>
 
-    <select id="type">
-        <option value="give">Given</option>
-        <option value="take">Taken</option>
-    </select>
+<select id="type">
+<option value="give">Given</option>
+<option value="take">Taken</option>
+</select>
 
-    <input type="number" id="amount" placeholder="Amount">
-    <input type="text" id="note" placeholder="Reason">
+<input id="amount" type="number" placeholder="Amount">
+<input id="note" placeholder="Reason">
 
-    <button onclick="save()">Save</button>
-    <button onclick="closeModal()">Close</button>
+<button onclick="addData()">Save</button>
+<button onclick="closeModal()">Close</button>
 </div>
 </div>
 
-<script>
-let data = JSON.parse(localStorage.getItem("data")) || [];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCztqUkKjz-fd2iRLnDUPiZ1X5HOFCGHGQ",
+  authDomain: "transaction-manager-de37d.firebaseapp.com",
+  projectId: "transaction-manager-de37d",
+  storageBucket: "transaction-manager-de37d.firebasestorage.app",
+  messagingSenderId: "958727433394",
+  appId: "1:958727433394:web:9881b2a2d6fc6ed32eadab",
+  measurementId: "G-BVZZMKB0CZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 /* CLOCK */
-function updateClock() {
-    let now = new Date();
-    document.getElementById("clock").innerText = now.toLocaleString();
+setInterval(()=>{
+    document.getElementById("clock").innerText = new Date().toLocaleString();
+},1000);
+
+/* AUTH */
+window.register = ()=>{
+    createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then(()=> alert("Registered successfully"))
+    .catch(err=> alert(err.message));
 }
-setInterval(updateClock, 1000);
+
+window.login = ()=>{
+    signInWithEmailAndPassword(auth, email.value, password.value)
+    .then(()=> alert("Login successful"))
+    .catch(err=> alert(err.message));
+}
+
+window.logout = ()=>{
+    signOut(auth);
+}
+
+/* FIXED AUTH STATE */
+onAuthStateChanged(auth,user=>{
+    if(user){
+        document.getElementById("auth").style.display="none";
+        document.getElementById("app").style.display="block";
+        document.getElementById("userEmail").innerText = user.email;
+        loadData();
+    } else {
+        document.getElementById("auth").style.display="block";
+        document.getElementById("app").style.display="none";
+    }
+});
 
 /* MODAL */
-function openModal() {
-    document.getElementById("modal").style.display = "block";
-}
-function closeModal() {
-    document.getElementById("modal").style.display = "none";
-}
+window.openModal = ()=> document.getElementById("modal").style.display="block";
+window.closeModal = ()=> document.getElementById("modal").style.display="none";
 
-/* SAVE */
-function save() {
-    let staff = document.getElementById("staff").value;
-    let type = document.getElementById("type").value;
-    let amount = document.getElementById("amount").value;
-    let note = document.getElementById("note").value;
+/* ADD DATA */
+window.addData = async ()=>{
+    if(!amount.value) return alert("Enter amount");
 
-    if (!amount) return alert("Enter amount");
-
-    let time = new Date().toLocaleString();
-
-    data.push({staff, type, amount, note, time});
-    localStorage.setItem("data", JSON.stringify(data));
-
-    closeModal();
-    render();
-}
-
-/* RENDER */
-function render() {
-    let tbody = document.getElementById("tableBody");
-    tbody.innerHTML = "";
-
-    let filter = document.getElementById("filter").value;
-
-    let total = 0;
-
-    data.forEach(t => {
-
-        if (filter && t.staff !== filter) return;
-
-        if (t.type === "take") total += Number(t.amount);
-        else total -= Number(t.amount);
-
-        tbody.innerHTML += `
-        <tr>
-            <td>${t.staff}</td>
-            <td>${t.type}</td>
-            <td>${t.amount}</td>
-            <td>${t.note}</td>
-            <td>${t.time}</td>
-        </tr>
-        `;
+    await addDoc(collection(db,"transactions"),{
+        staff: staff.value,
+        type: type.value,
+        amount: Number(amount.value),
+        note: note.value,
+        time: new Date().toLocaleString()
     });
 
-    document.getElementById("balance").innerText = "Total Balance: " + total + " TK";
+    closeModal();
+};
+
+/* LOAD DATA */
+function loadData(){
+    const q = query(collection(db,"transactions"), orderBy("time","desc"));
+
+    onSnapshot(q,snapshot=>{
+        let total = 0;
+        tableBody.innerHTML="";
+
+        snapshot.forEach(doc=>{
+            let d = doc.data();
+
+            if(filter.value && d.staff!==filter.value) return;
+
+            if(d.type==="take") total+=d.amount;
+            else total-=d.amount;
+
+            tableBody.innerHTML += `
+            <tr>
+                <td>${d.staff}</td>
+                <td>${d.type}</td>
+                <td>${d.amount}</td>
+                <td>${d.note}</td>
+                <td>${d.time}</td>
+            </tr>`;
+        });
+
+        balance.innerText = "Total Balance: " + total + " TK";
+    });
 }
 
-render();
+window.render = loadData;
+
 </script>
 
 </body>
