@@ -296,11 +296,11 @@ setInterval(()=>{
 },1000);
 
 /* LOGIN */
-loginBtn.onclick = ()=>{
-    if(email.value !== "mizan.universelink@gmail.com"){
-        alert("Access Denied ❌");
-        return;
-    }
+// loginBtn.onclick = ()=>{
+//     if(email.value !== "mizan.universelink@gmail.com"){
+//         alert("Access Denied ❌");
+//         return;
+//     }
 
     signInWithEmailAndPassword(auth,email.value,password.value)
     .then(()=> alert("Login success"))
